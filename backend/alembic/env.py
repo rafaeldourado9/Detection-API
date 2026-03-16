@@ -1,8 +1,13 @@
+import sys
 from logging.config import fileConfig
+from pathlib import Path
 
 from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
+
+# Adiciona o diretório raiz ao PYTHONPATH
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.config import settings
 from src.infrastructure.persistence.models import Base

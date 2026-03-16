@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from src.domain.detection.value_objects import DetectionStatus
+from src.domain.camera.value_objects import CameraStatus, CameraType
 
 
 class Base(DeclarativeBase):
@@ -21,6 +22,19 @@ class UserModel(Base):
     email: Mapped[str] = mapped_column(String(320), unique=True, nullable=False, index=True)
     hashed_password: Mapped[str] = mapped_column(String(128), nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
+
+
+class CameraModel(Base):
+    __tablename__ = "cameras"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    url: Mapped[str] = mapped_column(String(512), nullable=False)
+    camera_type: Mapped[CameraType] = mapped_column(Enum(CameraType, name="camera_type"), nullable=False)
+    status: Mapped[CameraStatus] = mapped_column(Enum(CameraStatus, name="camera_status"), default=CameraStatus.INACTIVE)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    last_detection_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class DetectionModel(Base):

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.v1.auth_routes import router as auth_router
 from src.api.v1.detection_routes import router as detection_router
+from src.api.v1.camera_routes import router as camera_router
 
 
 def create_app() -> FastAPI:
@@ -18,6 +19,7 @@ def create_app() -> FastAPI:
 
     application.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
     application.include_router(detection_router, prefix="/api/v1/detections", tags=["detections"])
+    application.include_router(camera_router, prefix="/api/v1/cameras", tags=["cameras"])
 
     return application
 

@@ -27,6 +27,22 @@ class UserResponse(BaseModel):
     is_active: bool
 
 
+class CreateCameraRequest(BaseModel):
+    name: str
+    url: str
+    camera_type: str
+
+
+class CameraResponse(BaseModel):
+    id: UUID
+    name: str
+    url: str
+    camera_type: str
+    status: str
+    created_at: datetime
+    last_detection_at: datetime | None = None
+
+
 class DetectionResponse(BaseModel):
     id: UUID
     status: str
